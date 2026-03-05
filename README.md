@@ -15,7 +15,8 @@ Arquitectura: MVVM (Model-View-ViewModel) para asegurar un código mantenible, e
 Gestión de Dependencias: Gradle (Kotlin DSL).
 
 Estructura del Proyecto
-` ` `textapp/src/main/java/com/tuusuario/codebite/
+` ` `
+app/src/main/java/com/tuusuario/codebite/
 ├── data/                 # Repositorios y Fuentes de Datos
 │   ├── local/            # Base de datos Room (para Streaks)
 │   └── remote/           # API o servicios externos (para Píldoras)
