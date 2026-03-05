@@ -17,6 +17,8 @@ Arquitectura: MVVM (Model-View-ViewModel) para asegurar un código mantenible, e
 
 Gestión de Dependencias: Gradle (Kotlin DSL).
 
+## 🚀 Estado del Desarrollo
+Puedes seguir el progreso en tiempo real de las funcionalidades de **CodeBite** en nuestro [Tablero de Proyecto](github.com/users/EDWIN0vg/projects/1).
 
 ## ⚖️ Licencia
 
