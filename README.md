@@ -16,3 +16,8 @@ Interfaz de Usuario: Jetpack Compose (recomendado) para una UI declarativa y mod
 Arquitectura: MVVM (Model-View-ViewModel) para asegurar un código mantenible, escalable y fácil de testear.
 
 Gestión de Dependencias: Gradle (Kotlin DSL).
+
+
+## ⚖️ Licencia
+
+Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
