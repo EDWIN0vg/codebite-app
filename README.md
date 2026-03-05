@@ -1,9 +1,33 @@
 # codebite-app
+
+**Propósito del Proyecto**
+
 Plataforma de micro-learning para devs: píldoras de conocimiento y desafíos de 2 minutos para aprovechar cada tiempo muerto.
 
+CodeBite nace para transformar la forma en que los desarrolladores aprovechan su tiempo libre. En un mundo donde el aprendizaje continuo es vital pero el tiempo es escaso, muchos estudiantes pierden momentos valiosos (transporte, esperas, descansos) por no tener herramientas adaptadas a sesiones cortas.
 
-CodeBite es una plataforma educativa móvil diseñada para desarrolladores y estudiantes de tecnología que desean mantener sus conocimientos frescos sin dedicar horas a un curso extenso. A través de píldoras de conocimiento y desafíos rápidos de 2 minutos, la app transforma el tiempo muerto (como esperar el autobús o hacer una fila) en una sesión productiva 
-de estudio.
+Esta aplicación resuelve ese problema ofreciendo:
+
+* Micro-aprendizaje: Píldoras de conocimiento técnico que se consumen en segundos.
+* Aprendizaje Activo: Desafíos prácticos de 2 minutos que refuerzan la retención de conceptos de Kotlin.
+* Hábito Gamificado: Un sistema de rachas que motiva al usuario a aprender algo nuevo cada día, convirtiendo el tiempo muerto en crecimiento profesional.
+  
+
+**Funcionalidades Principales**
+
+CodeBite es una plataforma de micro-aprendizaje diseñada para dispositivos Android que permite a los desarrolladores dominar Kotlin a través de tres pilares fundamentales:
+
+1. Píldoras de Conocimiento (Knowledge Bites)
+* Contenido curado: Lecciones teóricas breves diseñadas para ser leídas en menos de 60 segundos.
+* Sintaxis real: Bloques de código con formato legible para facilitar la comprensión de conceptos complejos de Kotlin.
+
+2. Desafíos de 2 Minutos (Daily Challenges)
+* Aprendizaje bajo presión: Un motor de retos con temporizador de 120 segundos para poner a prueba la agilidad mental del usuario.
+* Feedback instantáneo: Validación inmediata de respuestas para corregir errores en el momento.
+
+3. Sistema de Progresión y Gamificación
+* Contador de Rachas (Streaks): Registro visual de los días consecutivos de aprendizaje para fomentar la disciplina.
+* Gestión de Perfil: Personalización de los temas de interés según el nivel del desarrollador (Junior, Mid, Senior).
 
 
 Stack Tecnológico
@@ -15,9 +39,10 @@ Interfaz de Usuario: Jetpack Compose (recomendado) para una UI declarativa y mod
 Arquitectura: MVVM (Model-View-ViewModel) para asegurar un código mantenible, escalable y fácil de testear.
 Gestión de Dependencias: Gradle (Kotlin DSL).
 
-Estructura del Proyecto
+### Estructura del Proyecto
 
-` ` `app/src/main/java/com/tuusuario/codebite/
+```text
+app/src/main/java/com/tuusuario/codebite/
 ├── data/                 # Repositorios y Fuentes de Datos
 │   ├── local/            # Base de datos Room (para Streaks)
 │   └── remote/           # API o servicios externos (para Píldoras)
@@ -27,8 +52,8 @@ Estructura del Proyecto
 │   └── theme/            # Colores, Tipografía y Formas
 ├── viewmodel/            # Lógica de UI y gestión de estado
 ├── model/                # Clases de datos (Pill, Challenge, User)
-└── utils/                # Funciones de ayuda y extensiones de Kotlin` `
-
+└── utils/                # Funciones de ayuda y extensiones de Kotlin
+```
 🔍 Detalle de Componentes
 * **Data Layer**: Maneja la persistencia local con Room para asegurar el aprendizaje offline.
 * **UI Layer**: Implementada 100% en Jetpack Compose, siguiendo los principios de Material Design 3.
