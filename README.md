@@ -7,6 +7,7 @@ de estudio.
 
 
 Stack Tecnológico
+
 CodeBite está construido con tecnologías modernas de desarrollo nativo para garantizar un rendimiento óptimo y una experiencia de usuario fluida en dispositivos Android.
 Lenguaje de Programación: Kotlin, el lenguaje moderno y preferido por Google para el desarrollo de Android.
 Entorno de Desarrollo (IDE): Android Studio, el IDE oficial para la plataforma Android.
@@ -15,6 +16,7 @@ Arquitectura: MVVM (Model-View-ViewModel) para asegurar un código mantenible, e
 Gestión de Dependencias: Gradle (Kotlin DSL).
 
 Estructura del Proyecto
+
 ` ` `app/src/main/java/com/tuusuario/codebite/
 ├── data/                 # Repositorios y Fuentes de Datos
 │   ├── local/            # Base de datos Room (para Streaks)
