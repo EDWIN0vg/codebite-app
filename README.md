@@ -9,17 +9,17 @@ CodeBite nace para transformar la forma en que los desarrolladores aprovechan su
 Esta aplicación resuelve ese problema ofreciendo:
 
 * Micro-aprendizaje: Píldoras de conocimiento técnico que se consumen en segundos.
-* Aprendizaje Activo: Desafíos prácticos de 2 minutos que refuerzan la retención de conceptos de Kotlin.
+* Aprendizaje Activo: Desafíos prácticos de 2 minutos que refuerzan la retención de conceptos de C++, Java, Python.
 * Hábito Gamificado: Un sistema de rachas que motiva al usuario a aprender algo nuevo cada día, convirtiendo el tiempo muerto en crecimiento profesional.
 
 ### **Stack Tecnológico**
 
 CodeBite está construido con tecnologías modernas de desarrollo nativo para garantizar un rendimiento óptimo y una experiencia de usuario fluida en dispositivos Android.
-Lenguaje de Programación: Kotlin, el lenguaje moderno y preferido por Google para el desarrollo de Android.
-Entorno de Desarrollo (IDE): Android Studio, el IDE oficial para la plataforma Android.
-Interfaz de Usuario: Jetpack Compose (recomendado) para una UI declarativa y moderna que facilita la creación de las "píldoras" de conocimiento.
-Arquitectura: MVVM (Model-View-ViewModel) para asegurar un código mantenible, escalable y fácil de testear.
-Gestión de Dependencias: Gradle (Kotlin DSL).
+* **Lenguaje de Programación:** Kotlin, el lenguaje moderno y preferido por Google para el desarrollo de Android.
+* **Entorno de Desarrollo (IDE):** Android Studio, el IDE oficial para la plataforma Android.
+* **Interfaz de Usuario:** Jetpack Compose (recomendado) para una UI declarativa y moderna que facilita la creación de las "píldoras" de conocimiento.
+* **Arquitectura:** MVVM (Model-View-ViewModel) para asegurar un código mantenible, escalable y fácil de testear.
+* **Gestión de Dependencias:** Gradle (Kotlin DSL).
 
 ### Estructura del Proyecto
 
@@ -36,18 +36,18 @@ app/src/main/java/com/tuusuario/codebite/
 ├── model/                # Clases de datos (Pill, Challenge, User)
 └── utils/                # Funciones de ayuda y extensiones de Kotlin
 ```
-Detalle de Componentes
+### **Detalle de Componentes**
 * **Data Layer**: Maneja la persistencia local con Room para asegurar el aprendizaje offline.
 * **UI Layer**: Implementada 100% en Jetpack Compose, siguiendo los principios de Material Design 3.
 * **ViewModel**: Gestiona el estado de la UI y la lógica de los desafíos de 2 minutos.
 
-Estado del Desarrollo
-Puedes seguir el progreso en tiempo real de las funcionalidades de **CodeBite** en nuestro
+### **Estado del Desarrollo**
+Puedes seguir el progreso en tiempo real de las funcionalidades de **CodeBite** en nuestro github
 
-Diseño UI/UX
+### **Diseño UI/UX**
 La identidad visual de CodeBite está diseñada para la eficiencia.
 
-Autor(es): Edwin Hernan Vergara Gonzalez
+### **Autor(es):** Edwin Hernan Vergara Gonzalez
 
 ## Referencias
 
@@ -55,4 +55,3 @@ Autor(es): Edwin Hernan Vergara Gonzalez
 - [Funcionalidades de la aplicación](docs/funcionalidades.md)
 - [Diseño de la interfaz de usuario](docs/ui.md)
 
-p1.0.1
