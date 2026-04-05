@@ -240,7 +240,7 @@ fun PantallaQuizPython(alVolver: () -> Unit, alSiguiente: () -> Unit) {
 }
 
 // =========================================================================
-// !!! NUEVA !!! 3. PANTALLA DE RESUMEN Y RACHA (MOCKUP FINAL)
+// 3. PANTALLA DE RESUMEN Y RACHA (MOCKUP FINAL)
 // =========================================================================
 
 @Composable
