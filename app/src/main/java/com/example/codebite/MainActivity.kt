@@ -52,6 +52,10 @@ val ColorPython = Color(0xFF4B8BBE)
 val ColorJava = Color(0xFFF89820)
 val ColorCpp = Color(0xFF00599C)
 
+// --- ESTRUCTURAS DE DATOS PARA LAS PANTALLAS GENÉRICAS ---
+data class DatosLeccion(val num: String, val titulo: String, val desc: String, val cod1: String, val cod2: String, val cod3: String)
+data class DatosQuiz(val pregunta: String, val cod1: String, val cod2: String, val opciones: List<Pair<String, String>>, val correcta: String)
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,16 +67,13 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun CodeBiteApp() {
     var pantallaActual by remember { mutableStateOf("Inicio") }
+    var lenguajeSeleccionado by remember { mutableStateOf("Python") } // Nueva variable para saber qué se presionó
 
-    // TOQUE PROFESIONAL: Si el usuario da "atrás" en el celular, vuelve al Inicio
-    BackHandler(enabled = pantallaActual != "Inicio") {
-        pantallaActual = "Inicio"
-    }
+    BackHandler(enabled = pantallaActual != "Inicio") { pantallaActual = "Inicio" }
 
     Scaffold(
         bottomBar = {
-            // Ahora la barra de navegación funciona y cambia de pantalla
-            if (pantallaActual == "Inicio" || pantallaActual == "Perfil") {
+            if (pantallaActual == "Inicio" || pantallaActual == "Perfil" || pantallaActual == "Desafios") {
                 BarraNavegacionInferior(
                     pantallaSeleccionada = pantallaActual,
                     alNavegar = { destino -> pantallaActual = destino }
@@ -80,26 +81,41 @@ fun CodeBiteApp() {
             }
         }
     ) { paddingValues ->
-        Surface(
-            modifier = Modifier.fillMaxSize().padding(paddingValues),
-            color = ColorFondoApp
-        ) {
+        Surface(modifier = Modifier.fillMaxSize().padding(paddingValues), color = ColorFondoApp) {
             when (pantallaActual) {
-                "Inicio" -> PantallaInicio(alNavegar = { destino -> pantallaActual = destino })
-                "Perfil" -> PantallaPerfil(alVolver = { pantallaActual = "Inicio" }) // Agregada
+                "Inicio" -> PantallaInicio(alNavegar = { destino ->
+                    // Si el destino es un lenguaje, lo guardamos y vamos a la lección
+                    if (destino in listOf("Java", "Python", "C++")) {
+                        lenguajeSeleccionado = destino
+                        pantallaActual = "Leccion"
+                    } else {
+                        pantallaActual = destino
+                    }
+                })
+                "Perfil" -> PantallaPerfil(alVolver = { pantallaActual = "Inicio" })
+                "Desafios" -> PantallaDesafios(alVolver = { pantallaActual = "Inicio" })
 
-                "Python" -> PantallaDetallePython(
-                    alVolver = { pantallaActual = "Inicio" },
-                    alSiguiente = { pantallaActual = "QuizPython" }
-                )
-                "QuizPython" -> PantallaQuizPython(
-                    alVolver = { pantallaActual = "Python" },
-                    alSiguiente = { pantallaActual = "Resumen" }
-                )
+                "Leccion" -> {
+                    // Aquí llenamos los datos dependiendo del lenguaje que eligió
+                    val datos = when(lenguajeSeleccionado) {
+                        "Java" -> DatosLeccion("01", "JAVA: VARIABLES", "Aprende a declarar variables estrictas.", "// Ejemplo:", "int edad = 20;", "String nombre = \"Edwin\";")
+                        "C++" -> DatosLeccion("01", "C++: POINTERS", "Los punteros almacenan memoria.", "// Ejemplo:", "int var = 20;", "int* ptr = &var;")
+                        else -> DatosLeccion("02", "PYTHON: LIST COMPREHENSIONS", "Recorre listas rápido.", "# Ejemplo:", "numeros = [1, 2]", "dobles = [x*2 for x in numeros]")
+                    }
+                    PantallaDetalleLenguaje(datos, alVolver = { pantallaActual = "Inicio" }, alSiguiente = { pantallaActual = "Quiz" })
+                }
+
+                "Quiz" -> {
+                    // Preguntas que cambian según el lenguaje
+                    val quiz = when(lenguajeSeleccionado) {
+                        "Java" -> DatosQuiz("¿Qué tipo de dato es 'edad'?", "int edad = 20;", "", listOf("A" to "A) String", "B" to "B) Float", "C" to "C) int", "D" to "D) Boolean"), "C")
+                        "C++" -> DatosQuiz("¿Qué guarda un puntero?", "int* ptr = &var;", "", listOf("A" to "A) String", "B" to "B) Dirección de memoria", "C" to "C) int", "D" to "D) Nada"), "B")
+                        else -> DatosQuiz("¿Cuál es el resultado de 'dobles'?", "numeros = [1, 2]", "dobles = [x*10 for x in numeros]", listOf("A" to "A) [1, 2, 10]", "B" to "B) [10, 20]", "C" to "C) [11, 12]", "D" to "D) Error"), "B")
+                    }
+                    PantallaQuizLenguaje(quiz, alVolver = { pantallaActual = "Leccion" }, alSiguiente = { pantallaActual = "Resumen" })
+                }
+
                 "Resumen" -> PantallaResumen(alFinalizar = { pantallaActual = "Inicio" })
-
-                "Java" -> PantallaLenguajeSimple("JAVA", alVolver = { pantallaActual = "Inicio" })
-                "C++" -> PantallaLenguajeSimple("C++", alVolver = { pantallaActual = "Inicio" })
             }
         }
     }
@@ -129,30 +145,26 @@ fun PantallaInicio(alNavegar: (String) -> Unit) {
 }
 
 @Composable
-fun PantallaDetallePython(alVolver: () -> Unit, alSiguiente: () -> Unit) {
+fun PantallaDetalleLenguaje(datos: DatosLeccion, alVolver: () -> Unit, alSiguiente: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize().background(ColorFondoApp)) {
         Column(modifier = Modifier.fillMaxSize()) {
             IconButton(onClick = alVolver, modifier = Modifier.padding(top = 16.dp, start = 16.dp)) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver", tint = Color.White)
             }
-            Card(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 12.dp),
-                colors = CardDefaults.cardColors(containerColor = ColorCardHeader), shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
-            ) {
+            Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 12.dp), colors = CardDefaults.cardColors(containerColor = ColorCardHeader), shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)) {
                 Column(modifier = Modifier.padding(24.dp)) {
-                    Text(text = "02", color = ColorTextoDestacadoCard, fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
+                    Text(text = datos.num, color = ColorTextoDestacadoCard, fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = "PYTHON: LIST COMPREHENSIONS", color = ColorTextoDestacadoCard, fontSize = 28.sp, fontWeight = FontWeight.Bold, lineHeight = 34.sp)
+                    Text(text = datos.titulo, color = ColorTextoDestacadoCard, fontSize = 28.sp, fontWeight = FontWeight.Bold, lineHeight = 34.sp)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = "Se usa para recorrer todos los elementos de una lista de forma sencilla sin usar contadores.", color = ColorTextoDestacadoCard, fontSize = 16.sp, fontWeight = FontWeight.Normal)
+                    Text(text = datos.desc, color = ColorTextoDestacadoCard, fontSize = 16.sp)
                 }
             }
             Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 24.dp)) {
                 val codeTextStyle = TextStyle(fontFamily = FontFamily.Monospace, color = Color.White, fontSize = 16.sp)
-                Text(text = "# Ejemplo rápido:", style = codeTextStyle, color = ColorCodigoComentario)
-                Text(text = "numeros = [1, 2, 3]", style = codeTextStyle)
-                Text(text = "dobles = [x * 2 for x in numeros]", style = codeTextStyle)
-                Text(text = "# Resultado: [2, 4, 6]", style = codeTextStyle, color = ColorCodigoComentario)
+                Text(text = datos.cod1, style = codeTextStyle, color = ColorCodigoComentario)
+                Text(text = datos.cod2, style = codeTextStyle)
+                Text(text = datos.cod3, style = codeTextStyle, color = if (datos.cod3.startsWith("#") || datos.cod3.startsWith("//")) ColorCodigoComentario else Color.White)
             }
         }
         Box(modifier = Modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.BottomEnd) {
@@ -165,84 +177,60 @@ fun PantallaDetallePython(alVolver: () -> Unit, alSiguiente: () -> Unit) {
 
 @SuppressLint("DefaultLocale")
 @Composable
-fun PantallaQuizPython(alVolver: () -> Unit, alSiguiente: () -> Unit) {
+fun PantallaQuizLenguaje(datos: DatosQuiz, alVolver: () -> Unit, alSiguiente: () -> Unit) {
     var opcionSeleccionada by remember { mutableStateOf<String?>(null) }
-    val respuestaCorrecta = "B"
-
     var tiempoRestante by remember { mutableIntStateOf(120) }
+
     LaunchedEffect(key1 = tiempoRestante, key2 = opcionSeleccionada) {
-        if (tiempoRestante > 0 && opcionSeleccionada == null) {
-            delay(1000L)
-            tiempoRestante--
-        }
+        if (tiempoRestante > 0 && opcionSeleccionada == null) { delay(1000L); tiempoRestante-- }
     }
-    val minutos = tiempoRestante / 60
-    val segundos = tiempoRestante % 60
-    val tiempoTexto = String.format("%02d:%02d", minutos, segundos)
 
     Column(modifier = Modifier.fillMaxSize().background(Color.Black).padding(24.dp)) {
-
         Row(modifier = Modifier.fillMaxWidth().padding(top = 16.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = alVolver, modifier = Modifier.offset(x = (-16).dp)) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver", tint = Color.White)
-            }
+            IconButton(onClick = alVolver, modifier = Modifier.offset(x = (-16).dp)) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver", tint = Color.White) }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = tiempoTexto, color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                Text(text = String.format("%02d:%02d", tiempoRestante / 60, tiempoRestante % 60), color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(4.dp))
                 Box(modifier = Modifier.width(80.dp).height(2.dp).background(ColorAcentoNaranja))
             }
         }
-
         Spacer(modifier = Modifier.height(48.dp))
-        Text(text = "¿Cuál es el resultado de 'dobles'?", color = Color.White, fontSize = 18.sp, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+        Text(text = datos.pregunta, color = Color.White, fontSize = 18.sp, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
         Spacer(modifier = Modifier.height(32.dp))
-
         val codeStyle = TextStyle(fontFamily = FontFamily.Monospace, color = Color.LightGray, fontSize = 18.sp)
-        Text(text = "numeros = [1, 2]", style = codeStyle)
+        Text(text = datos.cod1, style = codeStyle)
         Spacer(modifier = Modifier.height(4.dp))
-        Text(text = "dobles = [x * 10 for x in numeros]", style = codeStyle)
+        Text(text = datos.cod2, style = codeStyle)
         Spacer(modifier = Modifier.height(48.dp))
 
-        val opciones = listOf("A" to "A) [1, 2, 10, 20]", "B" to "B) [10, 20]", "C" to "C) [11, 12]]", "D" to "D) Error de Sintaxis")
-
-        opciones.forEach { (id, texto) ->
+        datos.opciones.forEach { (id, texto) ->
             val colorBoton = if (opcionSeleccionada != null) {
                 when (id) {
-                    respuestaCorrecta -> ColorBotonQuizVerde
+                    datos.correcta -> ColorBotonQuizVerde
                     opcionSeleccionada -> ColorBotonQuizRojo
                     else -> ColorBotonQuizGris
                 }
             } else ColorBotonQuizGris
 
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 16.dp)) {
-                Button(
-                    onClick = { if (opcionSeleccionada == null && tiempoRestante > 0) opcionSeleccionada = id },
-                    colors = ButtonDefaults.buttonColors(containerColor = colorBoton),
-                    shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth(0.65f).height(56.dp), contentPadding = PaddingValues(horizontal = 16.dp)
-                ) {
+                Button(onClick = { if (opcionSeleccionada == null && tiempoRestante > 0) opcionSeleccionada = id }, colors = ButtonDefaults.buttonColors(containerColor = colorBoton), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth(0.65f).height(56.dp), contentPadding = PaddingValues(horizontal = 16.dp)) {
                     Text(text = texto, color = Color.White, fontSize = 16.sp, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
                 }
-                if (opcionSeleccionada != null && id == respuestaCorrecta) {
+                if (opcionSeleccionada != null && id == datos.correcta) {
                     Spacer(modifier = Modifier.width(16.dp))
                     Icon(Icons.Default.CheckCircle, contentDescription = "Correcto", tint = Color.White, modifier = Modifier.size(36.dp))
                 }
             }
         }
-
-        // --- ¡NUEVO! Botón para avanzar después de responder ---
         if (opcionSeleccionada != null) {
-            Spacer(modifier = Modifier.weight(1f)) // Empuja el botón hacia abajo
-            Button(
-                onClick = alSiguiente,
-                colors = ButtonDefaults.buttonColors(containerColor = ColorAcentoNaranja),
-                modifier = Modifier.fillMaxWidth().height(56.dp),
-                shape = RoundedCornerShape(12.dp)
-            ) {
+            Spacer(modifier = Modifier.weight(1f))
+            Button(onClick = alSiguiente, colors = ButtonDefaults.buttonColors(containerColor = ColorAcentoNaranja), modifier = Modifier.fillMaxWidth().height(56.dp), shape = RoundedCornerShape(12.dp)) {
                 Text("Continuar", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             }
         }
     }
 }
+
 
 // =========================================================================
 // 3. PANTALLA DE RESUMEN Y RACHA (MOCKUP FINAL)
@@ -370,17 +358,6 @@ fun BarraNavegacionInferior(pantallaSeleccionada: String, alNavegar: (String) ->
 }
 
 @Composable
-fun PantallaLenguajeSimple(nombreLenguaje: String, alVolver: () -> Unit) {
-    Column(modifier = Modifier.fillMaxSize().background(ColorFondoApp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        Text(text = "Ruta de $nombreLenguaje (Placeholder)", color = Color.White, fontSize = 24.sp)
-        Spacer(modifier = Modifier.height(32.dp))
-        Button(onClick = alVolver, colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {
-            Text("Volver atrás", color = Color.White)
-        }
-    }
-}
-
-@Composable
 fun PantallaPerfil(alVolver: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize().background(Color.Black),
@@ -393,6 +370,25 @@ fun PantallaPerfil(alVolver: () -> Unit) {
         Spacer(modifier = Modifier.height(32.dp))
         Button(onClick = alVolver, colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)) {
             Text("Cerrar Sesión")
+        }
+    }
+}
+
+@Composable
+fun PantallaDesafios(alVolver: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize().background(Color.Black),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(Icons.Default.Star, contentDescription = null, tint = Color.Yellow, modifier = Modifier.size(80.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+        Text("Desafíos Semanales", color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text("Próximamente...", color = Color.LightGray, fontSize = 18.sp)
+        Spacer(modifier = Modifier.height(32.dp))
+        Button(onClick = alVolver, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF313D4F))) {
+            Text("Volver al Inicio", color = Color.White)
         }
     }
 }
