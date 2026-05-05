@@ -3,6 +3,7 @@ package com.example.codebite
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -63,11 +64,19 @@ class MainActivity : ComponentActivity() {
 fun CodeBiteApp() {
     var pantallaActual by remember { mutableStateOf("Inicio") }
 
+    // TOQUE PROFESIONAL: Si el usuario da "atrás" en el celular, vuelve al Inicio
+    BackHandler(enabled = pantallaActual != "Inicio") {
+        pantallaActual = "Inicio"
+    }
+
     Scaffold(
         bottomBar = {
-            // La barra inferior solo se muestra en el Inicio
-            if (pantallaActual == "Inicio") {
-                BarraNavegacionInferior()
+            // Ahora la barra de navegación funciona y cambia de pantalla
+            if (pantallaActual == "Inicio" || pantallaActual == "Perfil") {
+                BarraNavegacionInferior(
+                    pantallaSeleccionada = pantallaActual,
+                    alNavegar = { destino -> pantallaActual = destino }
+                )
             }
         }
     ) { paddingValues ->
@@ -77,21 +86,17 @@ fun CodeBiteApp() {
         ) {
             when (pantallaActual) {
                 "Inicio" -> PantallaInicio(alNavegar = { destino -> pantallaActual = destino })
+                "Perfil" -> PantallaPerfil(alVolver = { pantallaActual = "Inicio" }) // Agregada
 
                 "Python" -> PantallaDetallePython(
                     alVolver = { pantallaActual = "Inicio" },
                     alSiguiente = { pantallaActual = "QuizPython" }
                 )
-
                 "QuizPython" -> PantallaQuizPython(
                     alVolver = { pantallaActual = "Python" },
-                    alSiguiente = { pantallaActual = "Resumen" } // Flujo hacia el resumen
+                    alSiguiente = { pantallaActual = "Resumen" }
                 )
-
-                // ¡NUEVA! Pantalla de racha y resultados
-                "Resumen" -> PantallaResumen(
-                    alFinalizar = { pantallaActual = "Inicio" }
-                )
+                "Resumen" -> PantallaResumen(alFinalizar = { pantallaActual = "Inicio" })
 
                 "Java" -> PantallaLenguajeSimple("JAVA", alVolver = { pantallaActual = "Inicio" })
                 "C++" -> PantallaLenguajeSimple("C++", alVolver = { pantallaActual = "Inicio" })
@@ -345,11 +350,22 @@ fun BotonLenguajeImagen(idImagen: Int, nombre: String, alHacerClic: () -> Unit) 
 }
 
 @Composable
-fun BarraNavegacionInferior() {
+fun BarraNavegacionInferior(pantallaSeleccionada: String, alNavegar: (String) -> Unit) {
     NavigationBar(containerColor = ColorGrisBarra, contentColor = Color.White) {
-        NavigationBarItem(icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") }, label = { Text("Inicio") }, selected = true, onClick = { }, colors = NavigationBarItemDefaults.colors(selectedIconColor = Color.White, unselectedIconColor = Color.Gray, selectedTextColor = Color.White, indicatorColor = Color.Transparent))
-        NavigationBarItem(icon = { Icon(Icons.Default.Star, contentDescription = "Desafíos") }, label = { Text("Desafíos") }, selected = false, onClick = { }, colors = NavigationBarItemDefaults.colors(unselectedIconColor = Color.Gray, unselectedTextColor = Color.Gray))
-        NavigationBarItem(icon = { Icon(Icons.Default.Person, contentDescription = "Perfil") }, label = { Text("Perfil") }, selected = false, onClick = { }, colors = NavigationBarItemDefaults.colors(unselectedIconColor = Color.Gray, unselectedTextColor = Color.Gray))
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
+            label = { Text("Inicio") },
+            selected = pantallaSeleccionada == "Inicio",
+            onClick = { alNavegar("Inicio") },
+            colors = NavigationBarItemDefaults.colors(selectedIconColor = Color.White, unselectedIconColor = Color.Gray, indicatorColor = Color.DarkGray)
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Person, contentDescription = "Perfil") },
+            label = { Text("Perfil") },
+            selected = pantallaSeleccionada == "Perfil",
+            onClick = { alNavegar("Perfil") },
+            colors = NavigationBarItemDefaults.colors(selectedIconColor = Color.White, unselectedIconColor = Color.Gray, indicatorColor = Color.DarkGray)
+        )
     }
 }
 
@@ -360,6 +376,23 @@ fun PantallaLenguajeSimple(nombreLenguaje: String, alVolver: () -> Unit) {
         Spacer(modifier = Modifier.height(32.dp))
         Button(onClick = alVolver, colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {
             Text("Volver atrás", color = Color.White)
+        }
+    }
+}
+
+@Composable
+fun PantallaPerfil(alVolver: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize().background(Color.Black),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(Icons.Default.Person, contentDescription = null, tint = Color.White, modifier = Modifier.size(100.dp))
+        Text("Edwin", color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Text("Racha de 7 días", color = Color(0xFFE67E22), fontSize = 18.sp)
+        Spacer(modifier = Modifier.height(32.dp))
+        Button(onClick = alVolver, colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)) {
+            Text("Cerrar Sesión")
         }
     }
 }
