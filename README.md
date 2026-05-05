@@ -11,6 +11,19 @@ Esta aplicación resuelve ese problema ofreciendo:
 * Micro-aprendizaje: Píldoras de conocimiento técnico que se consumen en segundos.
 * Aprendizaje Activo: Desafíos prácticos de 2 minutos que refuerzan la retención de conceptos de C++, Java, Python.
 * Hábito Gamificado: Un sistema de rachas que motiva al usuario a aprender algo nuevo cada día, convirtiendo el tiempo muerto en crecimiento profesional.
+  
+### Capturas de Pantalla 
+### Inicio
+<img width="238" height="508" alt="image" src="https://github.com/user-attachments/assets/08510b9a-f959-4f25-af56-9823555a16a1" />
+
+### Lección
+<img width="238" height="510" alt="image" src="https://github.com/user-attachments/assets/9ea84133-90cd-44bc-ac8c-bccc1c0707c1" />
+
+### Quiz
+<img width="239" height="504" alt="image" src="https://github.com/user-attachments/assets/d6d53793-0c36-4d77-941b-3eb5cc52a984" />
+
+### Resumen
+<img width="237" height="507" alt="image" src="https://github.com/user-attachments/assets/05d9a9dd-739c-49ea-a812-122da0330ad7" />
 
 ### **Stack Tecnológico**
 
