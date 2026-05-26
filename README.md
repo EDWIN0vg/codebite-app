@@ -25,13 +25,27 @@ Esta aplicación resuelve ese problema ofreciendo:
 ### Resumen
 <img width="237" height="507" alt="image" src="https://github.com/user-attachments/assets/05d9a9dd-739c-49ea-a812-122da0330ad7" />
 
-### **Stack Tecnológico**
+## Funcionalidades Principales y Estado de Implementación
 
-CodeBite está construido con tecnologías modernas de desarrollo nativo para garantizar un rendimiento óptimo y una experiencia de usuario fluida en dispositivos Android.
-* **Lenguaje de Programación:** Kotlin, el lenguaje moderno y preferido por Google para el desarrollo de Android.
-* **Entorno de Desarrollo (IDE):** Android Studio, el IDE oficial para la plataforma Android.
-* **Interfaz de Usuario:** Jetpack Compose (recomendado) para una UI declarativa y moderna que facilita la creación de las "píldoras" de conocimiento.
-* **Arquitectura:** MVVM (Model-View-ViewModel) para asegurar un código mantenible, escalable y fácil de testear.
+| Módulo / Funcionalidad | Descripción Técnica | Estado |
+| :--- | :--- | :---: |
+| **Autenticación Nativa** | Pantalla de Login con validación rigurosa de credenciales en cliente, control de excepciones de red y persistencia del estado de sesión a través del ciclo de vida de la app. | `✅ IMPLEMENTADO` |
+| **Especialización por Nivel** | Selector dinámico interactivo de perfiles (**Junior → Mid → Senior**). Adapta de manera automática el árbol de complejidad del contenido y los parámetros del temporizador según el perfil técnico del usuario. | `✅ IMPLEMENTADO` |
+| **Visor de Código IDE** | Componente visual personalizado con arquitectura de renderizado rápido y tema *Darcula*. Incorpora coloreado sintáctico semántico real para fragmentos de código en **Java, Python y C++**. | `✅ IMPLEMENTADO` |
+| **XP Honesto + Feedback** | Sistema de gamificación que otorga únicamente `+50 XP` tras validación exitosa del reto. Al finalizar el quiz, despliega un cuadro de diálogo con una explicación técnica profunda del porqué del acierto o fallo. | `✅ IMPLEMENTADO` |
+| **Sistema de Rachas (Streaks)** | Algoritmo de verificación diaria conectado a la capa de persistencia local para medir la consistencia del aprendizaje del usuario. | `⏳ EN DESARROLLO` |
+
+---
+
+## Stack Tecnológico
+
+CodeBite está construido bajo los estándares más exigentes de la ingeniería de software móvil moderna, priorizando el rendimiento nativo, el diseño reactivo y la estabilidad del sistema:
+
+* **Lenguaje de Programación:** [Kotlin](https://kotlinlang.org/), aprovechando sus características avanzadas de *Null-safety*, expresiones funcionales y corrutinas para tareas asíncronas.
+* **Interfaz de Usuario:** [Jetpack Compose](https://developer.android.com/jetpack/compose) implementando componentes nativos y directrices visuales de **Material Design 3**.
+* **Arquitectura de Software:** **MVVM (Model-View-ViewModel)** acoplado con arquitectura limpia (*Clean Architecture* de forma interna) para desacoplar completamente la lógica de negocio de la renderización de la UI.
+* **Garantía de Calidad (Testing):** [JUnit 4](https://junit.org/junit4/) para la ejecución de pruebas unitarias automatizadas que validan la lógica de asignación de XP, el control de temporizadores y los estados de la sesión.
+* **Integración Continua (CI/CD):** [GitHub Actions](https://github.com/features/actions) configurando un pipeline automatizado (`android.yml`) que compila la aplicación y ejecuta la suite de tests en cada *Commit* o *Pull Request* hacia la rama principal (**Always Green Assurance**).
 * **Gestión de Dependencias:** Gradle (Kotlin DSL).
 
 ### Estructura del Proyecto
@@ -57,13 +71,17 @@ app/src/main/java/com/tuusuario/codebite/
 ### **Estado del Desarrollo**
 Puedes seguir el progreso en tiempo real de las funcionalidades de **CodeBite** en nuestro github
 
-### **Diseño UI/UX**
-La identidad visual de CodeBite está diseñada para la eficiencia.
+### Diseño UI/UX e Identidad Visual
+La interfaz de CodeBite está diseñada bajo un enfoque de eficiencia cognitiva en movilidad:
+
+Tema Oscuro por Defecto: Reduce la fatiga visual en entornos de transporte público y optimiza el consumo de batería en pantallas OLED.
+
+Paleta Técnica: Uso del color negro absoluto (#000000) de fondo para contraste máximo, combinado con un acento naranja quemado (#E67E22) que guía el foco de atención del desarrollador hacia los elementos interactivos críticos y el visor de código.
 
 ### **Autor(es):** Edwin Hernan Vergara Gonzalez
 
 ## Referencias
-
+- [poster codebite](docs/PosterCodeBite.png)
 - [Ideas iniciales de proyecto](docs/ideas.md)
 - [Funcionalidades de la aplicación](docs/funcionalidades.md)
 - [Diseño de la interfaz de usuario](docs/ui.md)
