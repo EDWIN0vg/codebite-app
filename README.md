@@ -13,14 +13,18 @@ Esta aplicación resuelve ese problema ofreciendo:
 * Hábito Gamificado: Un sistema de rachas que motiva al usuario a aprender algo nuevo cada día, convirtiendo el tiempo muerto en crecimiento profesional.
   
 ### Capturas de Pantalla 
+
+### inicio de sesion 
+<img width="246" height="513" alt="image" src="https://github.com/user-attachments/assets/ed1abe35-b63c-47c9-96dc-b5a86213b1f8" />
+
 ### Inicio
-<img width="238" height="508" alt="image" src="https://github.com/user-attachments/assets/08510b9a-f959-4f25-af56-9823555a16a1" />
+<img width="241" height="508" alt="image" src="https://github.com/user-attachments/assets/2aa720d6-4aa5-416e-b95b-7a07aa00d180" />
 
 ### Lección
 <img width="238" height="510" alt="image" src="https://github.com/user-attachments/assets/9ea84133-90cd-44bc-ac8c-bccc1c0707c1" />
 
 ### Quiz
-<img width="239" height="504" alt="image" src="https://github.com/user-attachments/assets/d6d53793-0c36-4d77-941b-3eb5cc52a984" />
+<img width="232" height="502" alt="image" src="https://github.com/user-attachments/assets/b60de0cc-bd6e-4815-a4e1-45cacb62bd43" />
 
 ### Resumen
 <img width="237" height="507" alt="image" src="https://github.com/user-attachments/assets/05d9a9dd-739c-49ea-a812-122da0330ad7" />
@@ -81,7 +85,7 @@ Paleta Técnica: Uso del color negro absoluto (#000000) de fondo para contraste 
 ### **Autor(es):** Edwin Hernan Vergara Gonzalez
 
 ## Referencias
-- [poster codebite](docs/PosterCodeBite.png)
+- [poster codebite](docs/Poster CodeBite.png)
 - [Ideas iniciales de proyecto](docs/ideas.md)
 - [Funcionalidades de la aplicación](docs/funcionalidades.md)
 - [Diseño de la interfaz de usuario](docs/ui.md)
