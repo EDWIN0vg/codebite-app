@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeBite — Sustentación Final</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --black:    #000000;
+    --deepgray: #0a0a0a;
+    --card:     #111111;
+    --border:   #1e1e1e;
+    --orange:   #E67E22;
+    --orange2:  #f39c12;
+    --white:    #f0f0f0;
+    --muted:    #888;
+    --dimmed:   #444;
+    --green:    #27ae60;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--sans);
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: .4;
+  }
+
+  /* ─── SIDEBAR NAV ─── */
+  nav {
+    position: fixed;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    z-index: 100;
+  }
+  nav a {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--dimmed);
+    transition: background .3s, transform .3s;
+    display: block;
+    text-decoration: none;
+    position: relative;
+  }
+  nav a:hover, nav a.active {
+    background: var(--orange);
+    transform: scale(1.5);
+  }
+  nav a::before {
+    content: attr(data-label);
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--orange);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity .2s;
+    pointer-events: none;
+  }
+  nav a:hover::before { opacity: 1; }
+
+  /* ─── SLIDE BASE ─── */
+  .slide {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 60px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .slide-inner {
+    max-width: 1100px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ─── BG GLOW ─── */
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── SLIDE NUMBER ─── */
+  .slide-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dimmed);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .slide-num span { color: var(--orange); }
+
+  /* ─── TAGS ─── */
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--muted);
+    margin: 3px 3px 3px 0;
+    letter-spacing: 1px;
+  }
+  .tag.orange { border-color: var(--orange); color: var(--orange); }
+  .tag.green  { border-color: var(--green);  color: var(--green); }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--orange), transparent);
+    margin: 32px 0;
+    max-width: 500px;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 1 — PORTADA
+  ══════════════════════════════════════ */
+  #s1 { background: var(--black); }
+  #s1 .glow {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(230,126,34,.18) 0%, transparent 70%);
+    top: -100px;
+    left: -200px;
+  }
+
+  .logo-box {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 40px;
+  }
+  .logo-icon {
+    width: 64px; height: 64px;
+    background: var(--orange);
+    border-radius: 14px;
+    display: flex; align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: #000;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .logo-icon::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.2) 0%, transparent 60%);
+  }
+  .logo-text {
+    font-family: var(--sans);
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .logo-text span { color: var(--orange); }
+
+  .hero-tagline {
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 50px;
+    letter-spacing: 1px;
+  }
+  .hero-tagline em { color: var(--orange); font-style: normal; }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    max-width: 720px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 52px;
+  }
+  .hero-cell {
+    background: var(--card);
+    padding: 22px 26px;
+  }
+  .hero-cell label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dimmed);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .hero-cell p {
+    font-size: 14px;
+    color: var(--white);
+    font-weight: 600;
+  }
+  .hero-cell p.mono { font-family: var(--mono); color: var(--orange); font-size: 13px; }
+
+  .repo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--white);
+    border: 1px solid var(--dimmed);
+    border-radius: 8px;
+    padding: 12px 20px;
+    text-decoration: none;
+    transition: border-color .25s, color .25s;
+  }
+  .repo-link:hover { border-color: var(--orange); color: var(--orange); }
+  .repo-link i { color: var(--orange); }
+
+  .big-stat {
+    position: absolute;
+    right: 0; top: 50%;
+    transform: translateY(-50%);
+    text-align: right;
+    pointer-events: none;
+    user-select: none;
+  }
+  .big-stat .num {
+    font-family: var(--sans);
+    font-size: 180px;
+    font-weight: 800;
+    color: var(--border);
+    line-height: 1;
+    letter-spacing: -8px;
+  }
+  .big-stat .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dimmed);
+    letter-spacing: 3px;
+    text-align: right;
+    margin-top: -20px;
+  }
+
+  /* ───══════════════════════════════════
+     SLIDE 2 — EL PROBLEMA
+  ══════════════════════════════════════ */
+  #s2 { background: var(--deepgray); }
+  #s2 .glow {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(230,126,34,.1) 0%, transparent 70%);
+    bottom: -100px;
+    right: -100px;
+  }
+
+  .section-title {
+    font-family: var(--sans);
+    font-size: 46px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .section-title .accent { color: var(--orange); }
+
+  .problem-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 40px;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--orange), transparent);
+  }
+  .stat-card .big-number {
+    font-family: var(--sans);
+    font-size: 56px;
+    font-weight: 800;
+    color: var(--orange);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-card .stat-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .problem-text-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    grid-column: span 2;
+  }
+  .problem-text-block h3 {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--orange);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .problem-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .problem-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .problem-list li::before {
+    content: '//';
+    font-family: var(--mono);
+    color: var(--orange);
+    flex-shrink: 0;
+    font-size: 12px;
+    margin-top: 1px;
+  }
+
+  /* ───══════════════════════════════════
+     SLIDE 3 — LA SOLUCIÓN
+  ══════════════════════════════════════ */
+  #s3 { background: var(--black); }
+  #s3 .glow {
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(230,126,34,.12) 0%, transparent 70%);
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .solution-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  .feat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    transition: border-color .3s, transform .3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feat-card:hover {
+    border-color: var(--orange);
+    transform: translateY(-3px);
+  }
+  .feat-card .feat-icon {
+    width: 44px; height: 44px;
+    background: rgba(230,126,34,.1);
+    border: 1px solid rgba(230,126,34,.3);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    color: var(--orange);
+    margin-bottom: 18px;
+  }
+  .feat-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--white);
+  }
+  .feat-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+  .feat-card .feat-badge {
+    position: absolute;
+    top: 16px; right: 16px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--green);
+    border: 1px solid var(--green);
+    padding: 2px 7px;
+    border-radius: 3px;
+    letter-spacing: 1px;
+  }
+
+  .solution-highlight {
+    grid-column: span 2;
+    background: linear-gradient(135deg, rgba(230,126,34,.08) 0%, var(--card) 100%);
+    border: 1px solid rgba(230,126,34,.25);
+    border-radius: 14px;
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .solution-highlight i {
+    font-size: 36px;
+    color: var(--orange);
+    flex-shrink: 0;
+  }
+  .solution-highlight p {
+    font-size: 15px;
+    color: var(--white);
+    line-height: 1.7;
+  }
+  .solution-highlight strong { color: var(--orange); }
+
+  /* ───══════════════════════════════════
+     SLIDE 4 — ARQUITECTURA Y TECNOLOGÍAS
+  ══════════════════════════════════════ */
+  #s4 { background: var(--deepgray); }
+  #s4 .glow {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(39,174,96,.08) 0%, transparent 70%);
+    bottom: 0;
+    left: -100px;
+  }
+
+  .tech-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 40px;
+  }
+
+  .tech-stack {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .tech-stack-header {
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--orange);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: rgba(230,126,34,.04);
+  }
+  .tech-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--border);
+    transition: background .2s;
+  }
+  .tech-item:hover { background: rgba(255,255,255,.02); }
+  .tech-item:last-child { border-bottom: none; }
+  .tech-icon {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .ti-kotlin { background: rgba(127,82,255,.15); color: #7f52ff; }
+  .ti-compose { background: rgba(0,150,215,.15); color: #0096d7; }
+  .ti-junit { background: rgba(230,126,34,.15); color: var(--orange); }
+  .ti-gh { background: rgba(255,255,255,.08); color: var(--white); }
+  
+  .tech-info h4 { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+  .tech-info p { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+  /* ───══════════════════════════════════
+     SLIDE 5 — LIVE DEMO
+  ══════════════════════════════════════ */
+  #s5 { background: var(--black); }
+  #s5 .glow {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(230,126,34,.14) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+  }
+
+  .demo-flow {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    margin-top: 44px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .demo-step {
+    background: var(--card);
+    padding: 28px 20px;
+    position: relative;
+    border-right: 1px solid var(--border);
+    transition: background .3s;
+  }
+  .demo-step:hover { background: #161616; }
+  .demo-step:last-child { border-right: none; }
+
+  .step-number {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dimmed);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .step-icon {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    background: rgba(230,126,34,.1);
+    border: 1px solid rgba(230,126,34,.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    margin-bottom: 16px;
+    color: var(--orange);
+  }
+  .step-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .step-actions { list-style: none; }
+  .step-actions li {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .step-actions li:last-child { border-bottom: none; }
+  .step-actions li::before {
+    content: '→ ';
+    color: var(--orange);
+  }
+
+  .demo-tip-box {
+    margin-top: 28px;
+    background: rgba(230,126,34,.05);
+    border: 1px solid rgba(230,126,34,.2);
+    border-radius: 12px;
+    padding: 22px 28px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .demo-tip-box i {
+    color: var(--orange);
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .demo-tip-box div h4 {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--orange);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .demo-tip-box div p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .demo-tip-box strong { color: var(--white); }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: var(--orange);
+    z-index: 200;
+    transition: width .1s;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--deepgray);
+    border-top: 1px solid var(--border);
+    padding: 28px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  footer .brand {
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 800;
+  }
+  footer .brand span { color: var(--orange); }
+  footer p {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dimmed);
+  }
+  footer .gh-link {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color .2s;
+  }
+  footer .gh-link:hover { color: var(--orange); }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--dimmed); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--orange); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .problem-layout, .solution-grid, .tech-layout { grid-template-columns: 1fr !important; }
+    .problem-text-block { grid-column: span 1; }
+    .solution-highlight { grid-column: span 1; }
+    .demo-flow { grid-template-columns: 1fr 1fr; }
+    .problem-list { grid-template-columns: 1fr; }
+    .big-stat { display: none; }
+    .hero-grid { grid-template-columns: 1fr; }
+    .section-title { font-size: 32px; }
+    .slide { padding: 60px 28px; }
+    nav { display: none; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<nav id="sideNav">
+  <a href="#s1" data-label="Portada" class="active"></a>
+  <a href="#s2" data-label="Problema"></a>
+  <a href="#s3" data-label="Solución"></a>
+  <a href="#s4" data-label="Arquitectura"></a>
+  <a href="#s5" data-label="Live Demo"></a>
+</nav>
+
+<section class="slide" id="s1">
+  <div class="glow"></div>
+  <div class="slide-inner">
+    <div class="slide-num"><span>2025</span></div>
+
+    <div class="logo-box">
+      <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+      <div class="logo-text">Code<span>Bite</span></div>
+    </div>
+
+    <p class="hero-tagline">
+      Micro-learning gamificado para desarrolladores &nbsp;·&nbsp;
+      <em>Android Native · Kotlin · Jetpack Compose</em>
+    </p>
+
+    <div class="hero-grid">
+      <div class="hero-cell">
+        <label>Desarrollador</label>
+        <p>Edwin Hernan<br>Vergara Gonzalez</p>
+      </div>
+      <div class="hero-cell">
+        <label>Plataforma</label>
+        <p>Android Native<br>API 24+</p>
+      </div>
+      <div class="hero-cell">
+        <label>Repositorio</label>
+        <p class="mono">@EDWIN0vg / codebite-app</p>
+      </div>
+    </div>
+
+    <div>
+      <span class="tag orange"><i class="fa-brands fa-github"></i> &nbsp;EDWIN0vg</span>
+      <span class="tag green"><i class="fa-solid fa-circle-check"></i> &nbsp;CI / CD ACTIVO</span>
+      <span class="tag"><i class="fa-solid fa-flask"></i> &nbsp;JUnit 4</span>
+      <span class="tag">Material 3</span>
+      <span class="tag">Kotlin Coroutines</span>
+    </div>
+
+    <div class="divider" style="margin-top:40px;"></div>
+
+    <a class="repo-link" href="https://github.com/EDWIN0vg/codebite-app" target="_blank">
+      <i class="fa-brands fa-github"></i>
+      github.com/EDWIN0vg/codebite-app
+    </a>
+  </div>
+
+  <div class="big-stat">
+    <div class="num">CB</div>
+    <div class="label">CODEBITE v1.0</div>
+  </div>
+</section>
+
+<section class="slide" id="s2">
+  <div class="glow"></div>
+  <div class="slide-inner">
+    <div class="slide-num"><span>EL PROBLEMA</span></div>
+
+    <h2 class="section-title">
+      El tiempo muerto es<br>
+      <span class="accent">tiempo desperdiciado.</span>
+    </h2>
+    <p style="color:var(--muted);font-size:14px;max-width:560px;line-height:1.7;">
+      Los desarrolladores en etapa de formación y los profesionales junior pierden horas diarias en transporte y esperas.
+      Sin herramientas móviles técnicamente rigurosas, ese tiempo es irrecuperable.
+    </p>
+
+    <div class="problem-layout">
+      <div class="stat-card">
+        <div class="big-number">72<span style="font-size:28px;color:var(--muted)">min</span></div>
+        <div class="stat-desc">Tiempo promedio diario invertido en transporte urbano por trabajadores de tecnología en Colombia.
+        Tiempo productivo no aprovechado.</div>
+      </div>
+      <div class="stat-card">
+        <div class="big-number">58<span style="font-size:28px;color:var(--muted)">%</span></div>
+        <div class="stat-desc">Tasa de olvido técnico pasado el 70% del período de inactividad cognitiva, según la curva de Ebbinghaus aplicada al aprendizaje de código.</div>
+      </div>
+      <div class="stat-card">
+        <div class="big-number">3x</div>
+        <div class="stat-desc">Mayor retención de conceptos técnicos cuando el aprendizaje ocurre en sesiones distribuidas cortas 
+        versus una sola sesión prolongada.</div>
+      </div>
+      <div class="stat-card">
+        <div class="big-number">0</div>
+        <div class="stat-desc">Apps nativas en Android que combinen micro-retos de código real con validación técnica, gamificación y feedback educativo personalizado por nivel.</div>
+      </div>
+
+      <div class="problem-text-block">
+        <h3>// Brechas Identificadas en el Ecosistema Actual</h3>
+        <ul class="problem-list">
+          <li>Las plataformas existentes (HackerRank, LeetCode) no están diseñadas para sesiones de 2 minutos en movilidad.</li>
+          <li>Ausencia de sintaxis coloreada real en apps educativas móviles: el texto plano destruye la experiencia de código.</li>
+          <li>No existe diferenciación de niveles (Junior / Mid / Senior) dentro del flujo de un único reto.</li>
+          <li>La gamificación superficial premia la participación, no la corrección.
+          El XP no distingue entre respuesta acertada y fallida.</li>
+          <li>Cero feedback educativo post-quiz: el usuario sabe si falló, pero no por qué falló ni cómo corregirlo.</li>
+          <li>Las soluciones existentes son web-first: sin soporte offline, tiempos de carga lentos y UX no optimizada para pulgar.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s3">
+  <div class="glow"></div>
+  <div class="slide-inner">
+     <div class="slide-num"><span>LA SOLUCIÓN</span></div>
+
+    <h2 class="section-title">
+      Retos de código real.<br>
+      <span class="accent">En 2 minutos.<br>En tu bolsillo.</span>
+    </h2>
+    <p style="color:var(--muted);font-size:14px;max-width:600px;line-height:1.7;">
+      CodeBite transforma los tiempos muertos en sesiones de práctica técnica intensiva: micro-retos curados, editor visual estilo IDE, sistema de XP honesto y retroalimentación educativa inmediata.
+    </p>
+
+    <div class="solution-grid">
+      <div class="feat-card">
+        <span class="feat-badge">IMPLEMENTADO</span>
+        <div class="feat-icon"><i class="fa-solid fa-key"></i></div>
+        <h3>Autenticación y Gestión de Sesión</h3>
+        <p>Pantalla de Login nativa con validación de credenciales y persistencia de sesión.
+        El estado del usuario se mantiene entre aperturas de la aplicación, gartantizando una experiencia fluida y continua.</p>
+      </div>
+
+      <div class="feat-card">
+        <span class="feat-badge">IMPLEMENTADO</span>
+        <div class="feat-icon"><i class="fa-solid fa-layer-group"></i></div>
+        <h3>Especialización Dinámica por Nivel</h3>
+        <p>Selector interactivo que ajusta el contenido según el perfil del desarrollador: <strong style="color:var(--white)">Junior → Mid → Senior</strong>.
+        El mismo lenguaje presenta retos de complejidad creciente, permitiendo un camino de aprendizaje progresivo.</p>
+      </div>
+
+      <div class="feat-card">
+        <span class="feat-badge">IMPLEMENTADO</span>
+        <div class="feat-icon"><i class="fa-solid fa-code"></i></div>
+        <h3>Visor de Código Estilo IDE</h3>
+        <p>Componente custom que renderiza sintaxis real con coloreado semántico (tema Darcula).
+        Soporta Java, Python y C++. Elimina el texto plano y emula la experiencia visual de un editor profesional en mobile.</p>
+      </div>
+
+      <div class="feat-card">
+        <span class="feat-badge">IMPLEMENTADO</span>
+        <div class="feat-icon"><i class="fa-solid fa-star"></i></div>
+        <h3>Sistema de XP Honesto</h3>
+        <p>La lógica de gamificación está corregida: <strong style="color:var(--orange)">+50 XP únicamente cuando la respuesta es correcta.</strong> El sistema no premia la participación ciega — premia el dominio técnico verificado.</p>
+      </div>
+
+      <div class="solution-highlight">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <p>
+          <strong>Feedback Educativo Post-Quiz:</strong> Tras cada respuesta, CodeBite despliega una explicación técnica contextualizada — no solo "correcto/incorrecto".
+          El desarrollador comprende <em>por qué</em> la lógica funciona o por qué su razonamiento fue erróneo, reforzando la retención de conocimiento de forma activa.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s4">
+  <div class="glow"></div>
+  <div class="slide-inner">
+    <div class="slide-num"><span>ARQUITECTURA Y TECNOLOGÍAS</span></div>
+
+    <h2 class="section-title" style="text-align: center;">
+      Stack moderno.<br>
+      <span class="accent">Calidad verificable.</span>
+    </h2>
+    <p style="color:var(--muted);font-size:14px;max-width:600px;line-height:1.7;text-align: center;margin: 0 auto;">
+      Cada decisión tecnológica responde a un criterio de producción profesional.
+      No se usó ninguna herramienta por conveniencia: cada elección tiene justificación arquitectural.
+    </p>
+
+    <div class="tech-layout" style="grid-template-columns: 1fr; max-width: 650px; margin: 40px auto 0 auto;">
+      <div class="tech-stack">
+        <div class="tech-stack-header">// Stack Tecnológico</div>
+
+        <div class="tech-item">
+          <div class="tech-icon ti-kotlin">Kt</div>
+          <div class="tech-info">
+            <h4>Kotlin</h4>
+            <p>Lenguaje oficial Android.
+            Null-safety, coroutines, expresividad funcional. Reduce bugs en tiempo de compilación vs Java.</p>
+          </div>
+        </div>
+
+        <div class="tech-item">
+          <div class="tech-icon ti-compose">JC</div>
+          <div class="tech-info">
+            <h4>Jetpack Compose — Material 3</h4>
+            <p>UI declarativa reactiva.
+            Elimina XML. Recomposición inteligente: la UI se actualiza solo donde el estado cambia.</p>
+          </div>
+        </div>
+
+        <div class="tech-item">
+          <div class="tech-icon ti-junit">JU</div>
+          <div class="tech-info">
+            <h4>JUnit 4 — Pruebas Unitarias</h4>
+            <p>Suite de tests que valida la lógica de negocio crítica: 
+            cálculo de XP, validación de respuestas, transiciones de estado.</p>
+          </div>
+        </div>
+
+        <div class="tech-item">
+          <div class="tech-icon ti-gh"><i class="fa-brands fa-github" style="font-size:14px;"></i></div>
+          <div class="tech-info">
+            <h4>GitHub Actions — CI/CD</h4>
+            <p>Pipeline automatizado que ejecuta tests en cada push.
+            Cada commit recibe ✅ o ❌. La rama main siempre está en estado válido.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s5">
+  <div class="glow"></div>
+  <div class="slide-inner">
+    <div class="slide-num">SLIDE 05 / <span>GUÍA LIVE DEMO</span></div>
+
+    <h2 class="section-title">
+      Estructura del<br>
+      <span class="accent">Demo en Vivo.</span>
+    </h2>
+    <p style="color:var(--muted);font-size:14px;max-width:600px;line-height:1.7;">
+      Recorrido de presentación de 5 pasos diseñado para mostrar cada característica crítica en 
+      el orden de mayor impacto narrativo. Tiempo estimado: <strong style="color:var(--white)">6–8 minutos.</strong>
+    </p>
+
+    <div class="demo-flow">
+      <div class="demo-step">
+        <div class="step-number">PASO 01</div>
+        <div class="step-icon"><i class="fa-solid fa-lock-open"></i></div>
+        <div class="step-title">Pantalla de Login y Sesión</div>
+        <ul class="step-actions">
+          <li>Abrir app en frío</li>
+          <li>Ingresar credenciales</li>
+          <li>Mostrar pantalla principal</li>
+          <li>Resaltar persistencia</li>
+        </ul>
+      </div>
+
+      <div class="demo-step">
+        <div class="step-number">PASO 02</div>
+        <div class="step-icon"><i class="fa-solid fa-sliders"></i></div>
+        <div class="step-title">Selector de Nivel Dinámico</div>
+        <ul class="step-actions">
+          <li>Abrir selector de nivel</li>
+          <li>Elegir "Junior"</li>
+          <li>Mostrar reto resultante</li>
+          <li>Cambiar a "Senior"</li>
+        </ul>
+      </div>
+
+      <div class="demo-step">
+        <div class="step-number">PASO 03</div>
+        <div class="step-icon"><i class="fa-solid fa-code"></i></div>
+        <div class="step-title">Visor IDE — Darcula</div>
+        <ul class="step-actions">
+          <li>Mostrar fragmento Python</li>
+          <li>Señalar coloreado sintáctico</li>
+          <li>Comparar vs texto plano</li>
+          <li>Scroll por el código</li>
+        </ul>
+      </div>
+
+      <div class="demo-step">
+        <div class="step-number">PASO 04</div>
+        <div class="step-icon"><i class="fa-solid fa-circle-question"></i></div>
+        <div class="step-title">Quiz + Feedback Educativo</div>
+        <ul class="step-actions">
+          <li>Responder incorrectamente</li>
+          <li>Mostrar feedback de error</li>
+          <li>Responder correctamente</li>
+          <li>Mostrar feedback de acierto</li>
+        </ul>
+      </div>
+
+      <div class="demo-step">
+        <div class="step-number">PASO 05</div>
+        <div class="step-icon"><i class="fa-solid fa-trophy"></i></div>
+        <div class="step-title">XP Ganado y Resumen</div>
+        <ul class="step-actions">
+          <li>Mostrar pantalla de XP</li>
+          <li>Confirmar: +50 solo si correcto</li>
+          <li>Ver historial de racha</li>
+          <li>Cerrar demo</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="demo-tip-box">
+      <i class="fa-solid fa-lightbulb"></i>
+      <div>
+        <h4>// Tip Crítico para la Presentación</h4>
+        <p>
+          <strong>Antes del demo:</strong> ejecuta la app al menos una vez para tener datos cacheados.
+          <strong>Durante el paso 4:</strong> responde primero <em>incorrectamente</em> — el contraste visual del feedback negativo vs positivo es lo que más impacto genera.
+          <strong>Cierra fuerte:</strong> vuelve a GitHub Actions y muestra el pipeline verde en vivo desde el navegador del dispositivo o proyector.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand">Code<span>Bite</span></div>
+  <p style="font-family:var(--mono);font-size:11px;color:var(--dimmed);">
+    Edwin Hernan Vergara Gonzalez &nbsp;·&nbsp; Ingeniería de Sistemas &nbsp;·&nbsp; 2025
+  </p>
+  <a class="gh-link" href="https://github.com/EDWIN0vg/codebite-app" target="_blank">
+    <i class="fa-brands fa-github"></i>
+    github.com/EDWIN0vg/codebite-app
+  </a>
+</footer>
+
+<script>
+  // Progress bar
+  const bar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    bar.style.width = (scrolled / total * 100) + '%';
+  });
+
+  // Active nav dot
+  const slides = document.querySelectorAll('.slide');
+  const dots   = document.querySelectorAll('#sideNav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        dots.forEach(d => d.classList.remove('active'));
+        const idx = [...slides].indexOf(e.target);
+        if (dots[idx]) dots[idx].classList.add('active');
+      }
+    });
+  }, { threshold: 0.5 });
+  slides.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
