@@ -85,7 +85,8 @@ Paleta Técnica: Uso del color negro absoluto (#000000) de fondo para contraste 
 ### **Autor(es):** Edwin Hernan Vergara Gonzalez
 
 ## Referencias
-- [poster codebite](docs/Poster CodeBite.png)
+- [presentacion](docs/CodeBite_presentacion.html)
+- [poster codebite](docs/Poster_CodeBite.png)
 - [Ideas iniciales de proyecto](docs/ideas.md)
 - [Funcionalidades de la aplicación](docs/funcionalidades.md)
 - [Diseño de la interfaz de usuario](docs/ui.md)
